@@ -13,3 +13,7 @@ plugins=(git fasthg)
 source $ZSH/oh-my-zsh.sh
 
 export PATH="${ZSH_CONFIG_PATH}/../bin:${PATH}"
+
+if [ -f $HOME/.zshrc.custom ]; then
+    source $HOME/.zshrc.custom
+fi
