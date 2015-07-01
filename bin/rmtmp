@@ -1,0 +1,8 @@
+#!/bin/sh
+# removes common temporary files in a path recursively and deletes them
+
+rm_path=$(which rm)
+for path in $*; do
+    echo "looking for temporaries in ${path}"
+    find "$1" -type f -name '*.orig' -o -name '*~' | xargs "${rm_path}" -vf
+done
