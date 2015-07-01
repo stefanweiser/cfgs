@@ -1,0 +1,22 @@
+#!/bin/zsh
+# prints out the current exchange rate for buying EUR with CHF at BEKB
+
+request=$(wget -q "https://trading.money-net.ch/money-net/dyn/listings/defaultListList.jsp?cat=curr&lang=de" -O -)
+name="noname"
+row=0
+while [ "${name}" != "Eurozone" ]; do
+    row=$(( ${row} + 1 ))
+    name=$(echo "${request}" | xmllint --html --xpath "string(//table[@id='table_stocklist_1']/tbody/tr[${row}]/td[1])" - 2>/dev/null)
+    if [ -z "${name}" ]; then
+        echo "EUR/CHF exchange rate not found."
+        exit 1
+    fi
+done
+
+echo -n "For 1 EUR you need to pay "
+echo "${request}" | xmllint --html --xpath "string(//table[@id='table_stocklist_2']/tbody/tr[${row}]/td[2])" - 2>/dev/null
+echo -n " CHF at "
+echo "${request}" | xmllint --html --xpath "string(//table[@id='table_stocklist_4']/tbody/tr[${row}]/td[2])" - 2>/dev/null
+echo -n " (reference rate was "
+echo "${request}" | xmllint --html --xpath "string(//table[@id='table_stocklist_1']/tbody/tr[${row}]/td[3])" - 2>/dev/null
+echo " EUR/CHF)."
