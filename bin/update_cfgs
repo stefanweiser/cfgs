@@ -1,0 +1,5 @@
+#!/bin/zsh
+# updates the configuration repository
+
+repo_path=$(dirname $0:A)/..
+git pull
