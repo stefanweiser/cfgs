@@ -1,0 +1,67 @@
+# Mercurial
+alias hgc='hg commit'
+alias hgb='hg branch'
+alias hgba='hg branches'
+alias hgbk='hg bookmarks'
+alias hgco='hg checkout'
+alias hgd='hg diff'
+alias hged='hg diffmerge'
+# pull and update
+alias hgi='hg incoming'
+alias hgl='hg pull -u'
+alias hglr='hg pull --rebase'
+alias hgo='hg outgoing'
+alias hgp='hg push'
+alias hgs='hg status'
+alias hgsl='hg log --limit 20 --template "{node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\n" '
+# this is the 'git commit --amend' equivalent
+alias hgca='hg qimport -r tip ; hg qrefresh -e ; hg qfinish tip'
+# list unresolved files (since hg does not list unmerged files in the status command)
+alias hgun='hg resolve --list'
+
+function in_hg() {
+  path="."
+  while [ "$path:A" != "/" ]; do
+    if [[ -d "${path}/.hg" ]]; then
+      echo 1
+      break
+    fi
+    path="${path}/.."
+  done
+}
+
+function hg_branch() {
+  hg branch
+}
+
+function hg_prompt_info {
+  if [ $(in_hg) ]; then
+    echo "$ZSH_THEME_HG_PROMPT_PREFIX$(hg_branch)$(hg_dirty)$ZSH_THEME_HG_PROMPT_SUFFIX"
+  fi
+}
+
+function hg_dirty_choose {
+  if [ $(in_hg) ]; then
+    hg status 2> /dev/null | command grep -Eq '^\s*[ACDIM!?L]'
+    if [ $pipestatus[-1] -eq 0 ]; then
+      # Grep exits with 0 when "One or more lines were selected", return "dirty".
+      echo $1
+    else
+      # Otherwise, no lines were found, or an error occurred. Return clean.
+      echo $2
+    fi
+  fi
+}
+
+function hg_dirty {
+  hg_dirty_choose $ZSH_THEME_HG_PROMPT_DIRTY $ZSH_THEME_HG_PROMPT_CLEAN
+}
+
+function hgic() {
+  hg incoming "$@" | grep "changeset" | wc -l
+}
+
+function hgoc() {
+  hg outgoing "$@" | grep "changeset" | wc -l
+}
+
