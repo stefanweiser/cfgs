@@ -3,4 +3,13 @@
 # expecting that zsh is installed
 
 repo_path=$(dirname $0:A)
+
+echo "configuring zsh..."
+if [ -e $HOME/.zshrc ]; then
+    echo "  moving old config to $HOME/.zshrc.orig which gets overwritten..."
+    rm -rf $HOME/.zshrc.orig
+    mv $HOME/.zshrc $HOME/.zshrc.orig
+fi
+
 ln -s ${repo_path}/zsh/zshrc $HOME/.zshrc
+echo "  done."
