@@ -1,0 +1,6 @@
+#!/bin/zsh
+# initializes the configuration repository for the current user's profile
+# expecting that zsh is installed
+
+repo_path=$(dirname $0:A)
+ln -s ${repo_path}/zsh/zshrc $HOME/.zshrc

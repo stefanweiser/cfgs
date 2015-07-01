@@ -1,0 +1,13 @@
+# find the path to the repository by read the symbolic link created by the init script
+ZSH_CONFIG_PATH=$(dirname $(readlink $HOME/.zshrc))
+export ZSH=${ZSH_CONFIG_PATH}/oh-my-zsh
+ZSH_CUSTOM=${ZSH_CONFIG_PATH}/oh-my-zsh-custom
+
+ZSH_THEME="stefanweiser"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="dd.mm.yyyy"
+
+plugins=(git fasthg)
+
+source $ZSH/oh-my-zsh.sh

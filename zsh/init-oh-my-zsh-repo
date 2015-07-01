@@ -1,5 +1,0 @@
-#!/bin/sh
-# sets the missing symbolic links in the custom subdirectory of oh-my-zsh
-
-ln -s ../../../oh-my-zsh-custom/plugins/fasthg oh-my-zsh/custom/plugins/fasthg
-ln -s ../../oh-my-zsh-custom/themes oh-my-zsh/custom/themes
