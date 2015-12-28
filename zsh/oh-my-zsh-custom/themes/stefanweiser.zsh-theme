@@ -4,7 +4,12 @@ setopt promptsubst
 
 autoload -U add-zsh-hook
 
-source /etc/lsb-release
+if [ -f /etc/lsb-release ]; then
+    source /etc/lsb-release
+elif [ -f /etc/os-release ]; then
+    source /etc/os-release
+    DISTRIB_CODENAME="${ID}${VERSION_ID}"
+fi
 
 function __check_for_container()
 {
